@@ -1,0 +1,390 @@
+@echo off
+REM This script is used for setup.  We can always edit this to add new features and options.  This script is found on the desktop of Administrator Profile.
+cls
+
+REM ####################################################################################################
+:STARTMENU
+cls
+echo 1=Repairing Something.
+echo 2=Setting up a computer after imaging.
+Set /p Choice= Your Selection Please:
+if %Choice%==1 GOTO REPAIR
+if %Choice%==2 GOTO CONT
+REM ####################################################################################################
+
+REM ####################################################################################################
+:CONT
+
+SET _Name=Tech Dude
+echo %_Name% hit your A key to copy files.
+xcopy \\selma\support\zstart\. C:\data\ /E
+cls
+xcopy C:\data\GP\. C:\Windows\System32\GroupPolicy /E
+cls
+Echo Files successfully copied %_Name%.
+echo .
+echo .
+echo %_Name%, I am using the force to update your computer.... while you are waiting, here is a random inspirational quote.
+Powershell -ExecutionPolicy ByPass -File C:\data\quote.ps1
+gpupdate /force
+
+cls
+echo Preparing to remove Windows Bloat by calling RemoveBloat Script.
+echo A blue screen will pop up, please wait until it auto closes.
+timeout /t -1
+Powershell -ExecutionPolicy ByPass -File C:\data\removebloat.ps1
+echo Bloat Successfully removed.
+timeout /t -1
+cls
+
+cls
+echo Preparing to install various packages. One moment please.
+timeout /t -1
+Powershell -ExecutionPolicy ByPass -File C:\Data\installerScript.ps1
+echo Installation packages successfull.
+timeout /t 1
+cls
+
+cls
+echo Preparing to set default applications. One moment please.
+echo A blue screen will pop up, please wait until it auto closes.
+timeout /t -1
+Powershell -ExecutionPolicy ByPass -File C:\Data\defaultAppSet.ps1
+echo Default applications successfully set.
+timeout /t -1
+cls
+
+cls
+echo NB27Setup icon removed from non admin profiles
+del C:\Users\Default\Desktop\D27setup.lnk
+del C:\Users\Public\Desktop\D27setup.lnk
+timeout /t -1
+cls
+
+echo Please choose what you are setting up by putting in the number....
+echo.
+echo 1=Yoga12 Wood Oaks
+echo 2=T450 -Wood Oaks Tech Computer
+echo 3=T460 -Shabonee or IA Computer
+echo 4=T460 -Shabonee that is keeping Display Link Box
+echo 5=Yoga11 Adam Tech Lab
+echo 6=Learning Center Staff Machine
+echo 7=Learning Center Student Machine
+echo 8=WoodOaks 114 computer
+echo 9=x140 Backup Fleet
+
+Set /p Choice= Your Selection Please:
+if %Choice%==1 GOTO Yoga12
+if %Choice%==2 GOTO SHUTTY
+if %Choice%==3 GOTO Shabonee
+if %Choice%==4 GOTO SHDisplay
+if %Choice%==5 GOTO AdamLab
+if %Choice%==6 GOTO LCStaff
+if %Choice%==7 GOTO LCStudent
+if %Choice%==8 GOTO WO114
+if %Choice%==9 GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:WindowsSerial
+REM Microsoft Office setup.
+cls
+echo.
+echo.
+echo.  You can copy the text and then close notepad for Word to auto open!
+echo.  Use them keyboard shortcuts!  CTRL+A CTRL+C
+echo.  When you close Word, it will reopen so you can "Activate Online"
+start /wait \\selma\support\software\Microsoft\"Office 2016 Pro Plus for Windows SA"\"Serial (copy)".txt
+start /wait C:\"Program Files (x86)"\"Microsoft Office"\Office16\WINWORD.exe
+echo.
+echo.
+cls
+echo Office should be setup.
+echo To shutdown hit 1, otherwise please exit this window.
+Set /p Choice= Your Selection Please:
+if %Choice%==1 GOTO SHUTTY
+GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:Yoga12
+cls
+echo If you're imaging a computer for a math teacher, add a shortcut on the desktop to Geometer Sketchpad.
+timeout /t -10
+cls
+
+
+cls
+echo Please connect your device to the black box with a projector and wait for the correct drivers to install.  Wait until the projector is showing your screen and close and prompts that come up.  Then push any key to continue
+timeout /t -1
+cls
+echo We will now setup special permissions for any user to be able to run SmartFix
+echo .
+echo Right click "Security Configuration"
+echo .
+echo Choose Import Template
+echo .
+echo Navigate to C:\data\displayfix and choose DisplayMgr
+echo .
+echo Right Click "Security Configuration.." again and choose Analyze Computer Now (hit enter)
+echo .
+echo then finally, right click "Security Configuration.." again and choose Configure Computer Now (hit enter)
+echo .
+echo then exit the program and choose yes to save Console1
+echo .
+start /wait mmc C:\data\DisplayFix\Console1.msc /a
+cls
+echo Going to Join the domain now.
+Powershell -ExecutionPolicy RemoteSigned -File C:\data\jd.ps1
+timeout /t -10
+cls
+REM GOTO WindowsSerial
+GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:Shabonee
+del C:\Users\Public\Desktop\SmartFix.lnk
+Echo Smart Fix removed from Public User Desktop Folder.
+echo To un do this, you will need to manually copy it back from Data:/smart
+REM Microsoft Office setup.
+REM GOTO WindowsSerial
+GOTO ender
+REM ####################################################################################################
+
+REM ####################################################################################################
+:WO114
+del C:\Users\Public\Desktop\SmartFix.lnk
+Echo Smart Fix removed from Public User Desktop Folder.
+echo To un do this, you will need to manually copy it back from Data:/smart
+cls
+xcopy C:\data\WO114. C:\data\ /E
+echo StartMenu from 114 Setup copied for enforcement
+echo if This was not meant to be a 114 computer, close this program and then restart the script.
+timeout /t -1
+cls
+GOTO WO114P2
+REM ####################################################################################################
+
+REM ####################################################################################################
+:SHDisplay
+cls
+echo Please connect your device to the black box with a projector and wait for the correct drivers to install.  Wait until the projector is showing your screen and close any prompts that come up.  Then push any key to continue
+timeout /t -1
+cls
+echo We will now setup special permissions for any user to be able to run SmartFix
+echo .
+echo Right click "Security Configuration"
+echo .
+echo Choose Import Template
+echo .
+echo Navigate to C:\data\displayfix and choose DisplayMgr
+echo .
+echo Right Click "Security Configuration.." again and choose Analyze Computer Now (hit enter)
+echo .
+echo then finally, right click "Security Configuration.." again and choose Configure Computer Now (hit enter)
+echo .
+echo then exit the program and choose yes to save Console1
+echo .
+start /wait mmc C:\data\DisplayFix\Console1.msc /a
+cls
+REM Microsoft Office setup.
+REM GOTO WindowsSerial
+GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:AdamLab
+del C:\Users\Public\Desktop\SmartFix.lnk
+Echo Smart Fix removed from Public User Desktop Folder.
+echo To un do this, you will need to manually copy it back from Data:/smart
+REM Microsoft Office setup.
+cls
+echo.
+REM GOTO WindowsSerial
+GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:LCStaff
+del C:\Users\Public\Desktop\SmartFix.lnk
+Echo Smart Fix removed from Public User Desktop Folder.
+echo To un do this, you will need to manually copy it back from Data:/smart
+REM Microsoft Office setup.
+cls
+echo.
+echo.
+echo.
+REM GOTO WindowsSerial
+GOTO SHUTTY
+REM ####################################################################################################
+
+REM ####################################################################################################
+:LCStudent
+xcopy C:\data\LClab\StartMenu.xml C:\data\ /E
+Echo Smart Fix removed from Public User Desktop Folder.
+echo To un do this, you will need to manually copy it back from Data:/smart
+Echo Chrome+Firefox only start Menu applied
+Echo remove MS Office before continuing
+start /wait \\selma\support\software\microsoft\"Office 2016 Pro Plus for Windows SA"/setup.exe
+cls
+echo.
+GOTO SHUTTY
+REM ####################################################################################################
+
+
+REM ####################################################################################################
+REM Updating Smart Notebook + shutdown
+:ender
+REM cls
+REM echo Please run Update.  This may take awhile.  :(
+REM start /wait C:\"Program Files (x86)"\"SMART Technologies"\"Education Software"\Updater.exe
+REM echo %_Name%, this computer will self destruct in 5 seconds.
+REM echo.
+REM echo.
+REM echo.
+REM echo.
+REM echo.
+timeout /t -1
+shutdown -t 0 -r -f
+REM ####################################################################################################
+
+REM ####################################################################################################
+REM :ender2
+REM echo.  There's a pokemon behind you!
+REM echo.  This computer will shutdown to allow you to go catch it once you press any key.
+REM echo.
+REM timeout /t -10
+REM shutdown -t 0 -r -f
+REM ####################################################################################################
+
+REM ####################################################################################################
+:SHUTTY
+shutdown -t 0 -r -f
+REM ####################################################################################################
+
+REM ####################################################################################################
+:WO114P2
+cls
+echo.
+echo.  Text Edit will open with the serial number and port number so you can copy and paste as needed.
+echo.
+echo.  When Setup Opens, choose Modify
+echo.  If the next step doesn't show serial number, then copy and paste then Next
+echo.  A warning will appear about conflict, click ok
+echo.  Too bad it doesn't warn that the product itself is horrible....
+echo.  Next through, download and modify
+echo.  A popup will prompt for Port@Server, copy it from the text pad.
+echo.  When done you still have one more step..
+
+start \\selma\support\software\"Solidworks Education 2015-2016"\key.txt
+start /wait \\selma\support\software\"Solidworks Education 2015-2016"\setup.exe
+
+echo.
+cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\SOLIDWORKS 2015
+start .
+echo.  Right click SOLIDWORKS 2015 x64 Edition
+echo.  Properties -> Compatibility -> Compatibility Mode -> Check run this program and choose windows 8.1
+Goto ender2
+REM ####################################################################################################
+
+REM ####################################################################################################
+:REPAIR
+cls
+echo 1 = Microsoft Office
+echo 2 = Solid Works
+echo 3 = Microfoft Office Thesarus per request
+echo 4 = Add smart fix
+echo 5 = Install EDUCAM (Activision)
+Set /p Choice= Your Selection Please:
+if %Choice%==1 GOTO WindowsSerial
+if %Choice%==2 GOTO WO114P2
+if %Choice%==3 GOTO OfficeThesarus
+if %Choice%==4 GOTO smartyfix
+if %Choice%==5 GOTO EDUCAMINSTALL
+REM ####################################################################################################
+
+REM ####################################################################################################
+:EDUCAMINSTALL
+xcopy \\selma\support\zstart\LClabAppliedFix. C:\data\ /E
+cls
+echo Start Menu updated, any newly signed in profiles will have the EDU cam on the start menu.
+echo .
+xcopy C:\Data\"Applied Vision 4.lnk" C:\Users\Default\Desktop\
+echo.  It will now launch Activision for testing purpose.. please wait for firewall prompt.
+start /wait C:\"Program Files (x86)"\"Ken-A-Vision"\"Applied Vision 4"\"Applied Vision 4.exe"
+GOTO Ender2
+
+REM ####################################################################################################
+
+REM ####################################################################################################
+:OfficeThesarus
+echo 0.  Uninstall Office, restart if this has been done press any key to continue
+timeout /t -1
+cls
+xcopy \\selma\support\zstart\OfficeThesaurusFixStartMenuUpdate. C:\data\ /E
+start /wait \\selma\support\software\Microsoft\"Office 2016 Pro Plus for Windows SA"\000\2016.iso
+start /wait D:\setup.exe
+echo StartMenu from C:\data\OfficeThesaurusFixStartMenuUpdate copied for enforcement
+echo Jumping to WindowsSerial fix group to serialize Office, when done logout and StartMenu will update.
+timeout /t -1
+REM ########
+REM Microsoft Office setup 64.
+cls
+echo.
+echo.
+echo.  You can copy the text and then close notepad for Word to auto open!
+echo.  Use them keyboard shortcuts!  CTRL+A CTRL+C
+echo.  When you close Word, it will reopen so you can "Activate Online"
+start /wait \\selma\support\software\Microsoft\"Office 2016 Pro Plus for Windows SA"\"Serial (copy)".txt
+start /wait C:\"Program Files"\"Microsoft Office"\Office16\WINWORD.exe
+start /wait C:\"Program Files"\"Microsoft Office"\Office16\WINWORD.exe
+echo.
+echo.
+cls
+echo Office should be setup.
+echo To shutdown hit 1, otherwise please exit this window.
+Set /p Choice= Your Selection Please:
+if %Choice%==1 GOTO SHUTTY
+GOTO SHUTTY
+REM ####################################################################################################
+
+:Smartyfix
+SET _Name=Tech Dude
+echo %_Name% hit your A key to copy files.
+xcopy \\selma\support\zstart\. C:\data\ /E
+explorer C:\data\"smart fix"\
+echo Drag smart link icon to desktop
+timeout /t -1
+cls
+cls
+Echo Files successfully copied %_Name%.
+echo .
+echo .
+echo %_Name%, I am using the force to update your computer.... while you are waiting, here is a random inspirational quote.
+Powershell -ExecutionPolicy ByPass -File C:\data\quote.ps1
+gpupdate /force
+echo Please connect your device to the black box with a projector and wait for the correct drivers to install.  Wait until the projector is showing your screen and close and prompts that come up.  Then push any key to continue
+timeout /t -1
+cls
+echo We will now setup special permissions for any user to be able to run SmartFix
+echo .
+echo Right click "Security Configuration"
+echo .
+echo Choose Import Template
+echo .
+echo Navigate to C:\data\displayfix and choose DisplayMgr
+echo .
+echo Right Click "Security Configuration.." again and choose Analyze Computer Now (hit enter)
+echo .
+echo then finally, right click "Security Configuration.." again and choose Configure Computer Now (hit enter)
+echo .
+echo then exit the program and choose yes to save Console1
+echo .
+start /wait mmc C:\data\DisplayFix\Console1.msc /a
+cls
+
+echo smarty installed and ready close this screen.
+echo or click any key to shutdown
+timeout /t -1
+GOTO SHUTTY
